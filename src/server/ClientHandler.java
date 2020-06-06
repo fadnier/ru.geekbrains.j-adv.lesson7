@@ -31,7 +31,7 @@ public class ClientHandler {
                             String[] token = str.split(" ");
 
                             System.out.println(str);
-                            if (token.length < 2) {
+                            if (token.length < 3) {
                                 continue;
                             }
 
@@ -60,7 +60,16 @@ public class ClientHandler {
                             break;
                         }
 
-                        server.broadcastMsg(nick + ": " + str);
+                        if (str.startsWith("/w ")) {
+                            String[] token = str.split(" ",3);
+                            if(token.length > 2) {
+                                System.out.println("Приватное сообщение "+token[1]+":"+token[2]);
+                                server.privateMsgClient(token[2],token[1],this);
+                            }
+                        } else {
+                            server.broadcastMsg(nick + ": " + str);
+                        }
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -87,5 +96,9 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getNick() {
+        return nick;
     }
 }

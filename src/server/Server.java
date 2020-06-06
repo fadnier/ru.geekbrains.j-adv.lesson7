@@ -41,6 +41,20 @@ public class Server {
         }
     }
 
+    public void privateMsgClient(String msg, String name, ClientHandler sender){
+        boolean find = false;
+        for (ClientHandler c:clients) {
+            if (c.getNick().equals(name)) {
+                c.sendMsg("(Приват)"+sender.getNick()+":"+msg);
+                sender.sendMsg("(Приват)"+sender.getNick()+":"+msg);
+                find = true;
+            }
+        }
+        if(!find) {
+            sender.sendMsg("Нет такого клиента "+name+" или клиент уже отключился!");
+        }
+    }
+
     public void broadcastMsg(String msg){
         for (ClientHandler c:clients) {
             c.sendMsg(msg);
